@@ -73,6 +73,7 @@ services:
       - ./etc/php.ini:/usr/local/etc/php/conf.d/host_config.ini:ro
       - ./src/themes:/var/www/html/wp-content/themes:ro
       - ./src/plugins:/var/www/html/wp-content/plugins:ro
+      - ./src/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
 
 networks:
   internal:

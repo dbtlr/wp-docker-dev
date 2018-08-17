@@ -49,8 +49,9 @@ docker-compose down
 
 ## Your files
 
-In the `src/` directory you'll find 2 folders:
+In the `src/` directory you'll find 3 folders:
 
+- `src/mu-plugins`
 - `src/plugins`
 - `src/themes`
 
