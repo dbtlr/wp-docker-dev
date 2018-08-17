@@ -1,0 +1,27 @@
+# Say no to extra composer files.
+vendor
+composer.lock
+
+# Ignore IDE files
+.idea
+.vscode
+
+# Ignore OS files
+.DS_Store
+
+# No environmental config
+.env
+
+# No need to save default themes and plugins
+src/themes/*
+!src/themes/.gitkeep
+
+src/plugins/*
+!src/plugins/.gitkeep
+
+src/mu-plugins/*
+!src/mu-plugins/.gitkeep
+
+# No need to save the database
+var/mysql/*
+!var/mysql/.gitkeep

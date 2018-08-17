@@ -1,0 +1,87 @@
+version: '3.6'
+
+services:
+  bind:
+    image: cytopia/bind:0.15
+
+    restart: always
+
+    ports:
+      - "2053:53/tcp"
+      - "2053:53/udp"
+
+    environment:
+      - WILDCARD_DNS=${DOMAIN}=${IP_ROOT}.101
+      - DNS_FORWARDER=8.8.8.8,8.8.4.4
+      - DNSSEC_VALIDATE=no
+      - DEBUG_ENTRYPOINT=1
+      - DOCKER_LOGS=0
+
+    dns:
+      - 127.0.0.1
+
+    networks:
+      internal:
+        ipv4_address: ${IP_ROOT}.100
+
+  db:
+    image: mariadb:latest
+
+    restart: always
+
+    volumes:
+      - ./var/mysql:/var/lib/mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+    ports:
+      - "13306:3306"
+
+    depends_on:
+      - bind
+
+    networks:
+      internal:
+        ipv4_address: ${IP_ROOT}.110
+
+  wordpress:
+    image: wordpress
+
+    restart: always
+
+    depends_on:
+      - bind
+      - db
+
+    ports:
+      - "80:80"
+
+    environment:
+      PHP_VERSION: ${PHP_VERSION:-7.2}
+      WORDPRESS_VERSION: ${WORDPRESS_VERSION:-latest}
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      VIRTUAL_HOST: ${DOMAIN}
+
+    networks:
+      internal:
+        ipv4_address: ${IP_ROOT}.101
+
+    volumes:
+      - ./etc/php.ini:/usr/local/etc/php/conf.d/host_config.ini:ro
+      - ./src/themes:/var/www/html/wp-content/themes:ro
+      - ./src/plugins:/var/www/html/wp-content/plugins:ro
+
+networks:
+  internal:
+    name: ${NAME}-dev-net
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: ${IP_ROOT}.0/24

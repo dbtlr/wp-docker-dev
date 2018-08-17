@@ -1,0 +1,75 @@
+{
+    "name": "dbtlr/wp-docker-dev",
+    "description": "A Docker-based WordPress development environment",
+    "type": "project",
+    "repositories":[
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org"
+        }
+    ],
+    "require-dev": {
+        "johnpbloch/wordpress": "4.9",
+        "dbtlr/php-env-builder": "^1.0.0"
+    },
+    "authors": [
+        {
+            "name": "Drew Butler",
+            "email": "hi@dbtlr.com"
+        }
+    ],
+    "scripts": {
+        "setup": "Dbtlr\\PHPEnvBuilder\\ComposerScriptRunner::build",
+        "post-install-cmd": "@setup",
+        "post-update-cmd": "@setup"
+    },
+    "extra": {
+        "wordpress-install-dir": "vendor/wordpress",
+        "installer-paths": {
+            "src/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+            "src/plugins/{$name}/": ["type:wordpress-plugin"],
+            "src/themes/{$name}/": ["type:wordpress-theme"]
+          },
+        "php-env-builder": {
+            "envFile": ".env",
+            "questions": [
+                {
+                    "name": "NAME",
+                    "prompt": "What is you project's name?",
+                    "default": "wp",
+                    "required": true
+                },
+                {
+                    "name": "DOMAIN",
+                    "prompt": "What local domain name will you use?",
+                    "default": "wp.loc",
+                    "required": true
+                },
+                {
+                    "name": "PHP_VERSION",
+                    "prompt": "What version of PHP would you like to use?",
+                    "default": "7.2",
+                    "required": true
+                },
+                {
+                    "name": "WORDPRESS_VERSION",
+                    "prompt": "What version of WordPress would you like to use?",
+                    "default": "latest",
+                    "required": true
+                },
+                {
+                    "name": "MYSQL_ROOT_PASSWORD",
+                    "prompt": "What MySQL root password will we use?",
+                    "default": "rootpassword",
+                    "required": true
+                },
+                {
+                    "name": "IP_ROOT",
+                    "prompt": "Would you like to change the IP Address base?",
+                    "default": "172.16.200",
+                    "required": true
+                }
+            ]
+        }
+    }
+}
