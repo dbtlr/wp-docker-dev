@@ -1,13 +1,18 @@
 {
     "name": "dbtlr/wp-docker-dev",
     "description": "A Docker-based WordPress development environment",
+    "keywords": ["WordPress", "Docker", "development", "environment", "themes", "plugins"],
     "type": "project",
+    "license": "MIT",
     "repositories":[
         {
             "type":"composer",
             "url":"https://wpackagist.org"
         }
     ],
+    "require": {
+        "php": ">=7.1"
+    },
     "require-dev": {
         "johnpbloch/wordpress": "4.9",
         "dbtlr/php-env-builder": "^1.0.0"
